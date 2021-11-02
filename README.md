@@ -1,0 +1,2 @@
+# libft
+implementaion of libft
