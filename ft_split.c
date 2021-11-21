@@ -39,10 +39,10 @@ static	int	alloc_and_fill(char **arr, const char *s, size_t start, size_t len)
 		while (arr[i])
 			free(arr[i++]);
 		free(arr);
-		return (0);
+		return (1);
 	}
 	*arr = sub;
-	return (1);
+	return (0);
 }
 
 static	char	**spliter(const char *s, char c, char **new_arr)
@@ -64,7 +64,7 @@ static	char	**spliter(const char *s, char c, char **new_arr)
 		if ((s[i] == c && s[i + 1] != c) || (s[i + 1] == 0))
 		{
 			err_alloc = alloc_and_fill(&new_arr[j++], s, start, len);
-			if (err_alloc == 0)
+			if (err_alloc == 1)
 				return (NULL);
 			len = 0;
 			start = (i) + 1;

@@ -28,7 +28,7 @@ OBJECTS = $(SOURCES:%.c=%.o)
 
 BONUS_OBJECTS = $(BONUS_SOURCES:%.c=%.o)
 
-$(NAME) : $(OBJECTS) libft.h
+$(NAME) : $(OBJECTS)
 	@ar rcs $(NAME) $(OBJECTS)
 	@echo "\nArchive library created successfuly"
 
@@ -38,7 +38,7 @@ bonus: all $(BONUS_OBJECTS)
 
 all: $(NAME)
 
-%.o : %.c
+%.o : %.c libft.h
 	@$(CC) $(FLAGS) -o $@ -c $<
 	@echo "\nCreated\t$@\tfrom\t$<\tfile"
 
