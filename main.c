@@ -1,16 +1,68 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   ft_split.c                                         :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: haitkadi <marvin@42.fr>                    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/09 11:04:25 by haitkadi          #+#    #+#             */
-/*   Updated: 2021/11/09 11:04:29 by haitkadi         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-#include "libft.h"
 
+/*
+char *f(char *s){
+    int i = 0;
+    while(s[i]){
+        s[i] = ft_toupper(s[i]);
+        i++;
+    }
+    return(s);
+}*/
+/*
+int main(){
+
+    t_list *head;
+    t_list *new;
+    char str[] = "abcdefghijklmnopqrstuvwxyz";
+
+    head = NULL;
+    int i = 0;
+    while(str[i]){
+        new = ft_lstnew(strndup(&str[i], 1));
+        ft_lstadd_back(&head, new);
+        i++;
+    }
+    head = ft_lstmap(head, (void *)f, free);
+    while(head != NULL){
+        printf("%s\n", head->content);
+        head = head->next;
+    }
+
+
+    return 0;
+}*/
+
+// int    main(void)
+// {
+//     const char s[15] = "lor\xff em ipsum";
+
+//     printf("%p\t%s\n", ft_strrchr(s, '\xff'), ft_strrchr(s, '\xff'));
+//     printf("%p\t%s\n", strrchr(s, '\xff'), strrchr(s, '\xff'));
+
+//     return (0);
+// }
+#include "libft.h"
+#include <stdio.h>
+#include <string.h>
+
+// int main(void){
+
+//     int i = 0;
+//     char *s;
+//     size_t  len;
+    
+//     s = "<U+0000>         ";
+//     len = ft_strlen(s);
+    
+//     ft_bzero(s, 12);
+//     while (len)
+//     {
+//         printf("%c", s[i]);
+//         i++;
+//         len--;
+//     }
+//     return 0;
+// }
 static	size_t	words_counter(const char *s, char c)
 {
 	size_t	words;
@@ -95,4 +147,16 @@ char	**ft_split(char const *s, char c)
 		final_result = ft_calloc(1, sizeof(char *));
 	free(str);
 	return (final_result);
+}
+
+
+
+int main(void){
+    char **sp;
+    sp = ft_split(",,,,hello,world,this,is,me,,", ',');
+    int i = 0;
+    while(sp[i]){
+        printf("%s\n", sp[i]);
+        i++;
+    }
 }
