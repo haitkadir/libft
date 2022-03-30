@@ -6,93 +6,69 @@
 /*   By: haitkadi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/09 11:04:25 by haitkadi          #+#    #+#             */
-/*   Updated: 2021/11/09 11:04:29 by haitkadi         ###   ########.fr       */
+/*   Updated: 2022/03/30 20:14:47 by haitkadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "libft.h"
 
-static	size_t	words_counter(const char *s, char c)
+static	void	ft_split_util(t_list **head, char const *s, char c)
 {
-	size_t	words;
-	size_t	i;
-
-	words = 1;
-	i = 0;
-	while (s[i])
-	{
-		if (s[i] == c && s[i + 1] != c)
-			words += 1;
-		i++;
-	}
-	return (words);
-}
-
-static	int	alloc_and_fill(char **arr, const char *s, size_t start, size_t len)
-{
-	char	*sub;
 	int		i;
+	int		start;
+	int		len;
+	char	flag;
 
-	sub = ft_substr(s, start, len);
-	i = 0;
-	if (!sub)
+	i = -1;
+	flag = 0;
+	while (s[++i])
 	{
-		while (arr[i])
-			free(arr[i++]);
-		free(arr);
-		return (1);
+		if (flag == 0 && s[i] != c)
+		{
+			start = i;
+			flag = 1;
+		}
+		if ((flag == 1) && (s[i + 1] == c || s[i + 1] == 0))
+		{
+			flag = 0;
+			len = i - start;
+			if (s[i + 1] == 0)
+				len++;
+			ft_lstadd_back(&*head, ft_lstnew(ft_substr(s, start, len)));
+		}
 	}
-	*arr = sub;
-	return (0);
 }
 
-static	char	**spliter(const char *s, char c, char **new_arr)
+static	char	**ft_convert_array(t_list **head)
 {
-	size_t	start;
-	size_t	i;
-	size_t	j;
-	size_t	len;
-	int		err_alloc;
+	char	**str;
+	int		i;
+	t_list	*tmp;
 
 	i = 0;
-	j = 0;
-	len = 0;
-	start = 0;
-	while (s[i])
+	tmp = NULL;
+	str = NULL;
+	str = (char **)ft_calloc(ft_lstsize(*head) + 1, sizeof(char *));
+	if (!str)
+		exit(-1);
+	while (*head != NULL)
 	{
-		if (s[i] != c)
-			len++;
-		if ((s[i] == c && s[i + 1] != c) || (s[i + 1] == 0))
-		{
-			err_alloc = alloc_and_fill(&new_arr[j++], s, start, len);
-			if (err_alloc == 1)
-				return (NULL);
-			len = 0;
-			start = (i) + 1;
-		}
-		i++;
+		str[i++] = (**head).content;
+		tmp = *head;
+		*head = (**head).next;
+		if (tmp)
+			free(tmp);
+		tmp = NULL;
 	}
-	return (new_arr);
+	return (str);
 }
 
 char	**ft_split(char const *s, char c)
 {
-	char	*str;
-	char	**final_result;
-	char	**new_arr;
+	t_list	*head;
 
-	str = ft_strtrim(s, &c);
-	if (str == NULL || !s || !*s || !str[0])
-	{
-		final_result = ft_calloc(1, sizeof(char *));
-		free(str);
-		return (final_result);
-	}
-	new_arr = (char **)ft_calloc((words_counter(str, c) + 1), sizeof(char *));
-	if (new_arr == NULL)
-		return (0);
-	final_result = spliter(str, c, new_arr);
-	if (!final_result)
-		final_result = ft_calloc(1, sizeof(char *));
-	free(str);
-	return (final_result);
+	if (!s || !c)
+		return (NULL);
+	head = NULL;
+	ft_split_util(&head, s, c);
+	return (ft_convert_array(&head));
 }
