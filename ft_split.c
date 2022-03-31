@@ -6,7 +6,7 @@
 /*   By: haitkadi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/09 11:04:25 by haitkadi          #+#    #+#             */
-/*   Updated: 2022/03/30 20:14:47 by haitkadi         ###   ########.fr       */
+/*   Updated: 2021/11/09 11:04:29 by haitkadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "libft.h"
@@ -27,13 +27,13 @@ static	void	ft_split_util(t_list **head, char const *s, char c)
 			start = i;
 			flag = 1;
 		}
-		if ((flag == 1) && (s[i + 1] == c || s[i + 1] == 0))
+		if ((flag == 1) && (s[i] == c || s[i + 1] == '\0'))
 		{
 			flag = 0;
 			len = i - start;
-			if (s[i + 1] == 0)
+			if ((s[i] != c) && (s[i + 1] == '\0'))
 				len++;
-			ft_lstadd_back(&*head, ft_lstnew(ft_substr(s, start, len)));
+			ft_lstadd_back(head, ft_lstnew(ft_substr(s, start, len)));
 		}
 	}
 }
@@ -72,3 +72,4 @@ char	**ft_split(char const *s, char c)
 	ft_split_util(&head, s, c);
 	return (ft_convert_array(&head));
 }
+
